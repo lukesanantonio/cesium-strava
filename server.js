@@ -11,7 +11,7 @@ var app = express();
 app.set('view engine', 'pug')
 
 app.use('/public', express.static(path.join(__dirname, 'public')));
-app.use('/', express.static(__dirname))
+app.use('/lib', express.static(path.join(__dirname, 'lib')));
 
 app.listen(8080, function() {
   console.log('Cesium-strava is now listening on 8080');
