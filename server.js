@@ -8,6 +8,8 @@ var path = require('path');
 
 var app = express();
 
+app.set('view engine', 'pug')
+
 app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use('/', express.static(__dirname))
 

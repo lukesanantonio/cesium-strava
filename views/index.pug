@@ -1,0 +1,23 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="utf-8")
+    meta(http-equiv="X-UA-Compatible" content="IE=edge")
+    meta(name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no")
+    title Cesium Strava
+    script(src="/public/cesium/Build/CesiumUnminified/Cesium.js")
+    style.
+      @import url(/public/cesium/Build/CesiumUnminified/Widgets/widgets.css);
+      html, body, #cesiumContainer {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+  body
+    div
+      a(href="https://www.strava.com/oauth/authorize?client_id=17322&response_type=code&redirect_uri=http://localhost:8080/strava_auth&scope=view_private&approval_prompt=force").
+        Authenticate with Strava
+    #cesiumContainer.
+    script(src="/lib/controller.js")
