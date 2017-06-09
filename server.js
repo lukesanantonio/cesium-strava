@@ -7,6 +7,11 @@ var express = require('express');
 var path = require('path');
 var strava = require('strava-v3');
 
+process.on('unhandledRejection', function(reason, p) {
+  console.log(reason);
+  process.exit(1);
+});
+
 var app = express();
 
 app.set('view engine', 'pug')
