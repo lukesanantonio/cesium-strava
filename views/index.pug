@@ -17,7 +17,10 @@ html(lang="en")
       }
   body
     div
+    unless user_authorized
       a(href="https://www.strava.com/oauth/authorize?client_id=17322&response_type=code&redirect_uri=http://localhost:8080/strava_auth&scope=view_private&approval_prompt=force").
         Authenticate with Strava
     #cesiumContainer.
     script(src="/lib/controller.js")
+    script.
+        var Polylines = !{polylines};

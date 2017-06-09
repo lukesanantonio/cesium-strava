@@ -19,7 +19,41 @@ app.set('view engine', 'pug')
 app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use('/lib', express.static(path.join(__dirname, 'lib')));
 app.get('/', function(req, res) {
-  res.render('index');
+  var user_authd = false;
+  if(req.query.access_token) {
+    user_authd = true;
+    // Find user activities
+    var activities = new Promise(function(resolve, reject) {
+      strava.athlete.listActivities({ access_token: req.query.access_token },
+      function(err, payload, limits) {
+        if(payload) {
+          resolve(payload)
+        } else {
+          reject(err)
+        }
+      });
+    });
+
+    activities.then(function(activities) {
+      // Find polylines
+      polylines = []
+      for(var i = 0; i < activities.length; ++i) {
+        polylines.push(activities[i].map.summary_polyline);
+      }
+      return polylines;
+    }).then(function(polylines) {
+      var params = {
+        user_authorized: true,
+        polylines: JSON.stringify(polylines),
+      }
+      res.render('index', params);
+    }).catch(function(err) {
+      console.log(err);
+    });
+  }
+  else {
+    res.render('index', {user_authorized: user_authd});
+  }
 });
 
 app.get('/strava_auth', function(req, res) {
