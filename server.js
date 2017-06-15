@@ -17,7 +17,7 @@ var app = express();
 app.set('view engine', 'pug')
 
 app.use('/public', express.static(path.join(__dirname, 'public')));
-app.use('/lib', express.static(path.join(__dirname, 'lib')));
+app.use('/static', express.static(path.join(__dirname, 'static')));
 app.get('/', function(req, res) {
   var token = req.query.access_token;
   if(token) {
