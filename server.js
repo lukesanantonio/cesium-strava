@@ -19,9 +19,8 @@ app.set('view engine', 'pug')
 app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use('/lib', express.static(path.join(__dirname, 'lib')));
 app.get('/', function(req, res) {
-  var user_authd = false;
-  if(req.query.access_token) {
-    user_authd = true;
+  var token = req.get('Authorization');
+  if(token !== null) {
     // Find user activities
     var activities = new Promise(function(resolve, reject) {
       strava.athlete.listActivities({ access_token: req.query.access_token },
@@ -52,7 +51,7 @@ app.get('/', function(req, res) {
     });
   }
   else {
-    res.render('index', {user_authorized: user_authd});
+    res.render('index', {user_authorized: false, polylines: "[]"});
   }
 });
 
@@ -73,7 +72,9 @@ app.get('/strava_auth', function(req, res) {
 
   // Redirect the user back but this time providing the access token
   access.then(function(access_token) {
-    res.redirect('/?access_token=' + access_token)
+    res.header('Authorization', access_token);
+    console.log('Successfully authenticated');
+    res.redirect('/');
   }).catch(function(err) {
     res.send(err);
   });
