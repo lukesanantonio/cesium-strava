@@ -57,6 +57,7 @@ app.get('/', function(req, res) {
         // putting it right into a <script> tag so this ensures there is no
         // code, etc.
         polylines: JSON.stringify(polylines),
+        access_token: token,
       }
       res.render('index', params);
     }).catch(function(err) {
