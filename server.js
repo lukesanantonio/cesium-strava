@@ -37,12 +37,25 @@ app.get('/', function(req, res) {
       // Find polylines
       polylines = []
       for(var i = 0; i < activities.length; ++i) {
-        polylines.push(activities[i].map.summary_polyline);
+        const id = activities[i].id;
+        var pl = activities[i].map.summary_polyline;
+
+        // Ignore activities with no polyline
+        if(pl == null) continue;
+
+        // Push the id and polyline as an object because we won't ever need to
+        // access the polyline by ID, we just want the ID of the activity
+        // available so we can query the strava API for a detailed
+        // representation.
+        polylines.push({id: id, polyline: pl});
       }
       return polylines;
     }).then(function(polylines) {
       var params = {
         user_authorized: true,
+        // Turn the object into JSON, which is valid javascript! We'll be
+        // putting it right into a <script> tag so this ensures there is no
+        // code, etc.
         polylines: JSON.stringify(polylines),
       }
       res.render('index', params);
