@@ -11,3 +11,37 @@
     background-color: rgba(255, 255, 255, 1.0);
     border: 1px solid black;
 }
+
+#activities ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 1em;
+}
+
+#activities ul li {
+    font-size: 1.3em;
+    padding: .5em;
+}
+
+#activities ul li a {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+#activities ul li div.activity-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+#activities ul li div.activity-detail {
+    display: flex;
+    flex-direction: row;
+}
+
+#activities ul li div p {
+    margin: 0;
+    display: inline;
+}
