@@ -1,7 +1,7 @@
 #activities {
     position: fixed;
     top: 100px;
-    right: 100px;
+    left: 100px;
 
     width: 400px;
     height: 700px;
