@@ -21,51 +21,12 @@ app.use('/static', express.static(path.join(__dirname, 'static')));
 app.get('/', function(req, res) {
   var token = req.query.access_token;
   if(token) {
-    // Find user activities
-    var activities = new Promise(function(resolve, reject) {
-      strava.athlete.listActivities({ access_token: token },
-      function(err, payload, limits) {
-        if(payload) {
-          resolve(payload)
-        } else {
-          reject(err)
-        }
-      });
+    res.render('index', {
+      user_authorized: true,
+      access_token: token,
     });
-
-    activities.then(function(activities) {
-      // Find polylines
-      polylines = []
-      for(var i = 0; i < activities.length; ++i) {
-        const id = activities[i].id;
-        var pl = activities[i].map.summary_polyline;
-
-        // Ignore activities with no polyline
-        if(pl == null) continue;
-
-        // Push the id and polyline as an object because we won't ever need to
-        // access the polyline by ID, we just want the ID of the activity
-        // available so we can query the strava API for a detailed
-        // representation.
-        polylines.push({id: id, polyline: pl});
-      }
-      return polylines;
-    }).then(function(polylines) {
-      var params = {
-        user_authorized: true,
-        // Turn the object into JSON, which is valid javascript! We'll be
-        // putting it right into a <script> tag so this ensures there is no
-        // code, etc.
-        polylines: JSON.stringify(polylines),
-        access_token: token,
-      }
-      res.render('index', params);
-    }).catch(function(err) {
-      console.log(err);
-    });
-  }
-  else {
-    res.render('index', {user_authorized: false, polylines: "[]"});
+  } else {
+    res.render('index', { user_authorized: false });
   }
 });
 
@@ -89,6 +50,7 @@ app.get('/strava_auth', function(req, res) {
     console.log('Successfully authenticated');
     res.redirect('/?access_token=' + access_token);
   }).catch(function(err) {
+    console.log("error: " + err);
     res.send(err);
   });
 });
